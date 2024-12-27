@@ -7141,6 +7141,8 @@ const style = i$2`
 
   .add-row {
     margin-top: -16px;
+    margin-left: 8px;
+    margin-right: 8px;
     padding-bottom: 16px;
     display: flex;
     flex-direction: row;
@@ -7610,15 +7612,23 @@ class GrocyChoresCard extends s$1 {
     _renderAddTask() {
         if (typeof this.userId === "object" ) {
             return x`
-            <div style="display: none;" id="add-task-row" class="add-row">
-                <mwc-button @click=${() => this._addTask()}>
-                    <ha-icon class="add-icon" icon="mdi:plus"></ha-icon>
-                </mwc-button>
+            <div class="add-row" style="display: none;" id="add-task-row">
                 <ha-textfield
                         id="add-task"
                         class="add-input"
-                        .placeholder=${this._translate("Add task")}>
+                        .placeholder=${this._translate("Task name")}>
                 </ha-textfield>
+                <mwc-button @click=${() => this._addTask()}>
+                    <ha-icon class="add-icon" icon="mdi:plus"></ha-icon>
+                </mwc-button>
+            </div>
+            <div class="add-row" style="display: none; margin-top: -8px;" id="add-task-row-2">
+                <ha-select
+                        id="add-assigned"
+                        class="add-input"
+                        .label=${this._translate("Optional assigned to")}>
+            ${Object.entries(this.userId).map((property) => x`<mwc-list-item .value=${property[1]}>${property[0]}</mwc-list-item>`)}
+                </ha-select>
                 <ha-date-input
                         id="add-date"
                         class="add-input"
@@ -7626,12 +7636,6 @@ class GrocyChoresCard extends s$1 {
                         .label=${this._translate("Optional due date")}
                         .value="${this._taskDueDateInputFormat()}">
                 </ha-date-input>
-                <ha-select
-                        id="add-assigned"
-                        class="add-input"
-                        .label=${this._translate("Optional assigned to")}>
-            ${Object.entries(this.userId).map((property) => x`<mwc-list-item .value=${property[1]}>${property[0]}</mwc-list-item>`)}
-                </ha-select>
             </div>
         `
         }
@@ -8002,6 +8006,11 @@ class GrocyChoresCard extends s$1 {
         } else {
             x.style.display = "none";
             icon.icon = "mdi:chevron-down";
+        }
+        
+        if (typeof this.userId === "object" ) {
+            const y = this.shadowRoot.getElementById("add-task-row-2");
+            y.style.display = y.style.display === "none" ? "flex": "none";
         }
     }
 
