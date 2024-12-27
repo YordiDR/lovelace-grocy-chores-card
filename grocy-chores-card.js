@@ -8025,13 +8025,8 @@ class GrocyChoresCard extends s$1 {
             taskData["due_date"] = taskDueDate;
         }
 
-        if (typeof this.userId === "object") {
-            const taskAssignedTo = this.shadowRoot.getElementById('add-assigned').value;
-            taskData["assigned_to_user_id"] = this._getUserId(taskAssignedTo);
-        } else {
-            taskData["assigned_to_user_id"] = this._getUserId();
-        }
-        
+        taskData["assigned_to_user_id"] = typeof this.userId === "object" ? this.shadowRoot.getElementById('add-assigned').value : this._getUserId();
+
         this._hass.callService("grocy", "add_generic", {
             entity_type: "tasks", data: taskData
         });
