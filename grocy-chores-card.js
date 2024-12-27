@@ -7828,8 +7828,7 @@ class GrocyChoresCard extends s$1 {
     }
 
     _checkMatchUserFilter(item) {
-        let user = this.filter_user === "current" ? this._getUserId() : this.filter_user;
-        return item.__user_id === user;
+        return this.filter_user.indexOf(item.__user_id) !== -1;
     }
 
     _checkMatchTaskCategoryFilter(item) {
@@ -8045,7 +8044,6 @@ class GrocyChoresCard extends s$1 {
     _configSetup() {
         this.userId = this.config.user_id ?? 1;
         this.filter = this.config.filter;
-        this.filter_user = this.config.filter_user;
         this.filter_task_category = this.config.filter_task_category;
         this.remove_filter = this.config.remove_filter ?? false;
         this.show_quantity = this.config.show_quantity || null;
@@ -8081,11 +8079,21 @@ class GrocyChoresCard extends s$1 {
             this.task_icon = this.config.task_icon || 'mdi:checkbox-blank-outline';
             this.chore_icon = this.config.chore_icon || 'mdi:check-circle-outline';
         }
-        if(this.show_description) {
+        if (this.show_description) {
             this.description_max_length = this.config.description_max_length ?? null;
         }
-    }
+        if (this.config.filter_user) {
+            let filter_array = this.config.filter_user.split(',');
+            let filter_array_current_index = filter_array.indexOf("current");
 
+            if (filter_array_current_index !== -1) {
+                filter_array[filter_array_current_index] = this._getUserId();
+            }
+            this.filter_user = filter_array.map(elem => parseInt(elem));
+        } else {
+            this.filter_user = this.config.filter_user.split(',').map(elem => parseInt(elem));
+        }
+    }
 
     constructor() {
         super();
