@@ -130,7 +130,7 @@ class GrocyChoresCard extends LitElement {
                                direction: typeof d === "string" && d.startsWith("d") ? -1 : 1};
                 }
                 if(typeof sort[i] === "string") {
-                    sort[i] = {field: sort[i], direction: 1}
+                    sort[i] = {field: sort[i], direction: 1};
                 }
             }
             sort = sort.filter(x=>x.field !== "");
@@ -215,27 +215,27 @@ class GrocyChoresCard extends LitElement {
             return;
         }
 
-        return html`
-            ${html`
+        return x`
+            ${x`
                 <ha-card>
                     <h1 class="card-header flex">
                         <div class="name">
                             ${this.header}
                         </div>
-                        ${this.show_create_task ? this._renderAddTaskButton() : nothing}
+                        ${this.show_create_task ? this._renderAddTaskButton() : T}
                     </h1>
-                    ${this.show_create_task ? this._renderAddTask() : nothing}
+                    ${this.show_create_task ? this._renderAddTask() : T}
                     <div class="card-content">
                         ${this._renderItems(this.items)}
                     </div>
-                    ${this.itemsNotVisible > 0 ? this._renderNrItemsInGrocy() : nothing}
-                    ${this.overflow && this.overflow.length > 0 ? this._renderOverflow() : nothing}
+                    ${this.itemsNotVisible > 0 ? this._renderNrItemsInGrocy() : T}
+                    ${this.overflow && this.overflow.length > 0 ? this._renderOverflow() : T}
                 </ha-card>`}
         `;
     }
 
     _renderOverflow() {
-        return html`
+        return x`
             <div class="name more-items-title overflow-toggle show-class">
                 <div>
                     <ha-button class="expand-button show-more-button"
@@ -274,34 +274,34 @@ class GrocyChoresCard extends LitElement {
 
     _renderItems(cardCollection) {
         if (cardCollection && cardCollection.length > 0) {
-            return html`
+            return x`
                 ${cardCollection.map(item => this._renderItem(item))}
             `
         } else {
-            return html`
+            return x`
                 <div class="info flex">${this._translate("No todos")}!</div>
             `
         }
     }
 
     _renderItem(item) {
-        return html`
+        return x`
             <div class="${this.show_divider ? "grocy-item-container" : "grocy-item-container-no-border"} ${this.local_cached_hidden_items.includes(`${item.__type}${item.id}`) ? "hidden-class" : "show-class"} info flex" id="${item.__type}${item.id}">
                 <div>
                     ${this._renderItemName(item)}
                     ${this._renderItemDescription(item)}
-                    ${this._shouldRenderDueInDays(item) ? this._renderDueInDays(item) : nothing}
-                    ${this._shouldRenderAssignedToUser(item) ? this._renderAssignedToUser(item) : nothing}
-                    ${this._shouldRenderLastTracked(item) ? this._renderLastTracked(item) : nothing}
+                    ${this._shouldRenderDueInDays(item) ? this._renderDueInDays(item) : T}
+                    ${this._shouldRenderAssignedToUser(item) ? this._renderAssignedToUser(item) : T}
+                    ${this._shouldRenderLastTracked(item) ? this._renderLastTracked(item) : T}
                 </div>
-                ${this.show_track_button && item.__type === "chore" ? this._renderTrackChoreButton(item) : nothing}
-                ${this.show_track_button && item.__type === "task" ? this._renderTrackTaskButton(item) : nothing}
+                ${this.show_track_button && item.__type === "chore" ? this._renderTrackChoreButton(item) : T}
+                ${this.show_track_button && item.__type === "task" ? this._renderTrackTaskButton(item) : T}
             </div>
         `
     }
 
     _renderEntityNotFound(entity) {
-        return html`
+        return x`
             <hui-warning>
                 ${this._hass.localize("ui.panel.lovelace.warning.entity_not_found", "entity", entity ?? this.config.entity)}
                 <br>
@@ -311,7 +311,7 @@ class GrocyChoresCard extends LitElement {
     }
 
     _renderNrItemsInGrocy() {
-        return html`
+        return x`
             <div class="secondary not-showing">
                 ${this._translate("Look in Grocy for {number} more items", this.itemsNotVisible)}
             </div>
@@ -323,7 +323,7 @@ class GrocyChoresCard extends LitElement {
     }
 
     _renderAssignedToUser(item) {
-        return html`
+        return x`
             <div class="secondary">
                 ${this._translate("Assigned to")}:
                 ${item.assigned_to_name}
@@ -336,11 +336,11 @@ class GrocyChoresCard extends LitElement {
     }
 
     _renderLastTracked(item) {
-        return html`
+        return x`
             <div class="secondary">
                 ${this._translate("Last tracked")}:
                 ${this._formatLastTrackedDate(item.__last_tracked_date, item.__last_tracked_days, item.track_date_only) ?? "-"}
-                ${this.show_last_tracked_by && item.last_done_by != null ? this._translate("by") + " " + item.last_done_by.display_name : nothing}
+                ${this.show_last_tracked_by && item.last_done_by != null ? this._translate("by") + " " + item.last_done_by.display_name : T}
             </div>
         `
     }
@@ -350,16 +350,16 @@ class GrocyChoresCard extends LitElement {
     }
 
     _renderDueInDays(item) {
-        return html`
+        return x`
             <div class="secondary">
                 ${this._translate("Due")}:
-                <span class=${this._dueHtmlClass(item.__due_in_days) ?? nothing}>${this._formatDueDate(item.__due_date, item.__due_in_days) ?? "-"}</span>
+                <span class=${this._dueHtmlClass(item.__due_in_days) ?? T}>${this._formatDueDate(item.__due_date, item.__due_in_days) ?? "-"}</span>
             </div>
         `
     }
 
     _renderItemName(item) {
-        return html`
+        return x`
             <div class="primary">
                 ${item.__filtered_name ?? item.name}
             </div>
@@ -367,17 +367,17 @@ class GrocyChoresCard extends LitElement {
     }
 
     _renderItemDescription(item) {
-        return item.__description ? html`
+        return item.__description ? x`
             <div class="secondary">
                 ${item.__description}
             </div>
-        ` : nothing;
+        ` : T;
     }
 
 
 
     _renderAddTaskButton() {
-        return html`
+        return x`
             <mwc-button class="hide-button" @click=${() => this._toggleAddTask()}>
                 <ha-icon icon="mdi:chevron-down" id="add-task-icon"></ha-icon>
                 ${this._translate("Add task")}
@@ -386,8 +386,9 @@ class GrocyChoresCard extends LitElement {
     }
 
     _renderAddTask() {
-        return html`
-            <div id="add-task-row" class="add-row hidden-class">
+        if (typeof this.userId === "object" ) {
+            return x`
+            <div style="display: none;" id="add-task-row" class="add-row">
                 <mwc-button @click=${() => this._addTask()}>
                     <ha-icon class="add-icon" icon="mdi:plus"></ha-icon>
                 </mwc-button>
@@ -400,15 +401,42 @@ class GrocyChoresCard extends LitElement {
                         id="add-date"
                         class="add-input"
                         .locale=${this._hass.locale}
-                        .label=${this._translate("Optional due date")}>
+                        .label=${this._translate("Optional due date")}
+                        .value="${this._taskDueDateInputFormat()}">
                 </ha-date-input>
+                <ha-select
+                        id="add-assigned"
+                        class="add-input"
+                        .label=${this._translate("Optional assigned to")}>
+            ${Object.entries(this.userId).map((property) => x`<mwc-list-item .value=${property[1]}>${property[0]}</mwc-list-item>`)}
+                </ha-select>
             </div>
         `
+        }
+        return x`
+            <div style="display: none;" id="add-task-row" class="add-row">
+                <mwc-button @click=${() => this._addTask()}>
+                    <ha-icon class="add-icon" icon="mdi:plus"></ha-icon>
+                </mwc-button>
+                <ha-textfield
+                        id="add-task"
+                        class="add-input"
+                        .placeholder=${this._translate("Add task")}>
+                </ha-textfield>
+                <ha-date-input
+                        id="add-date"
+                        class="add-input"
+                        .locale=${this._hass.locale}
+                        .label=${this._translate("Optional due date")}
+                        .value="${this._taskDueDateInputFormat()}">
+                </ha-date-input>
+            </div>
+        `   
     }
 
     _renderTrackChoreButton(item) {
         if (this.chore_icon != null) {
-            return html`
+            return x`
                 <mwc-icon-button class="track-button"
                                  .label=${this._translate("Track")}
                                  @click=${() => this._trackChore(item.id, item.name)}>
@@ -418,7 +446,7 @@ class GrocyChoresCard extends LitElement {
             `
         }
 
-        return html`
+        return x`
             <mwc-button
                     @click=${() => this._trackChore(item.id, item.name)}>
                 ${this._translate("Track")}
@@ -428,7 +456,7 @@ class GrocyChoresCard extends LitElement {
 
     _renderTrackTaskButton(item) {
         if (this.task_icon != null) {
-            return html`
+            return x`
                 <mwc-icon-button class="track-checkbox"
                                  .label=${this._translate("Track")} @click=${() => this._trackTask(item.id, item.name)}>
                     <ha-icon class="track-button-icon" style="--mdc-icon-size: ${this.task_icon_size}px;"
@@ -437,7 +465,7 @@ class GrocyChoresCard extends LitElement {
             `
         }
 
-        return html`
+        return x`
             <mwc-button
                     @click=${() => this._trackTask(item.id, item.name)}>
                 ${this._translate("Track")}
@@ -538,6 +566,7 @@ class GrocyChoresCard extends LitElement {
             visible = visible && (item.__type === "task" ? this.show_tasks_without_due : true);
         } else {
             visible = visible || this.show_days == null;
+            visible = visible || (item.__due_in_days < 0);
 
             if(this.show_days != null) {
                 const days_range = typeof this.show_days === "number" ? [this.show_days] : this.show_days.split("..", 2);
@@ -577,8 +606,8 @@ class GrocyChoresCard extends LitElement {
     }
 
     _checkMatchUserFilter(item) {
-        let userArray = [].concat(this.filter_user).map((user) => user === "current" ? this._getUserId() : user);;
-        return userArray.some((user) => item.__user_id == user);
+        let user = this.filter_user === "current" ? this._getUserId() : this.filter_user;
+        return item.__user_id === user;
     }
 
     _checkMatchTaskCategoryFilter(item) {
@@ -744,14 +773,14 @@ class GrocyChoresCard extends LitElement {
     }
 
     _toggleAddTask() {
-        const addTaskRow = this.shadowRoot.getElementById("add-task-row");
-        const addTaskIcon = this.shadowRoot.getElementById("add-task-icon");
-        if (addTaskRow.classList.contains('hidden-class')) {
-            addTaskRow.classList.remove('hidden-class');
-            addTaskIcon.icon = "mdi:chevron-up";
+        const x = this.shadowRoot.getElementById("add-task-row");
+        const icon = this.shadowRoot.getElementById("add-task-icon");
+        if (x.style.display === "none") {
+            x.style.display = "flex";
+            icon.icon = "mdi:chevron-up";
         } else {
-            addTaskRow.classList.add('hidden-class');
-            addTaskIcon.icon = "mdi:chevron-down";
+            x.style.display = "none";
+            icon.icon = "mdi:chevron-down";
         }
     }
 
@@ -775,8 +804,13 @@ class GrocyChoresCard extends LitElement {
             taskData["due_date"] = taskDueDate;
         }
 
-        taskData["assigned_to_user_id"] = this._getUserId();
-
+        if (typeof this.userId === "object") {
+            const taskAssignedTo = this.shadowRoot.getElementById('add-assigned').value;
+            taskData["assigned_to_user_id"] = this._getUserId(taskAssignedTo);
+        } else {
+            taskData["assigned_to_user_id"] = this._getUserId();
+        }
+        
         this._hass.callService("grocy", "add_generic", {
             entity_type: "tasks", data: taskData
         });
@@ -816,8 +850,8 @@ class GrocyChoresCard extends LitElement {
         this.use_long_date = this.config.use_long_date ?? false;
         this.use_24_hours = this.config.use_24_hours ?? true;
         this.haptic = this.config.haptic ?? "selection";
-        this.task_icon = null
-        this.chore_icon = null
+        this.task_icon = null;
+        this.chore_icon = null;
         this.custom_sort = this.config.custom_sort;
         this.fixed_tiling_size = this.config.fixed_tiling_size ?? null;
         this.use_icons = this.config.use_icons ?? false;
@@ -833,7 +867,7 @@ class GrocyChoresCard extends LitElement {
 
     constructor() {
         super();
-        this.local_cached_hidden_items = []
+        this.local_cached_hidden_items = [];
     }
 
     getCardSize() {
@@ -856,7 +890,6 @@ window.customCards.push({
     name: 'Grocy Chores and Tasks Card',
     preview: false,
     description: 'A card used to display chores and/or tasks from the Grocy custom component.',
-    documentationURL: 'https://github.com/isabellaalstrom/lovelace-grocy-chores-card'
 });
 
 customElements.define('grocy-chores-card', GrocyChoresCard);
